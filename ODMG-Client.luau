@@ -1,29 +1,3 @@
---[[
-	ODMG (Sistema de "3D Maneuver Gear")
-	-------------------------------------
-	MÓDULO PRINCIPAL.
-
-	Aquí viven:
-	  - Estado y configuración compartidos (State, Settings, Keybinds)
-	  - Las referencias de personaje/servicios que necesitan los módulos hijos
-	  - El sistema de fuerzas (GetTotalForce / EnableForce), usado por todos
-	  - Los eventos de entrada (UIS): SOLO detectan el input y llaman a la
-	    función correspondiente del módulo hijo. Nada de lógica de gameplay
-	    vive acá.
-
-	Jerarquía esperada en el Explorer (los 4 son ModuleScripts hijos de este):
-
-	ODMG (este script)
-	 +- Combat    -> windup / hold / release
-	 +- Slides    -> wall slide, wall run, wall jump, floor slide
-	 +- HookGas   -> hooks, gas boost, orbit, follow
-	 +- Impulses  -> impulsos direccionales (doble tap)
-
-	Cada hijo se escribe como:  return function(ODMG) ... return Modulo end
-	Esto permite pasarles la tabla ODMG por closure sin necesitar rutas
-	relativas (script.Parent.Parent...) desde los hijos, que romperían al
-	estar un nivel más profundo en el árbol.
-]]
 
 --============================================================
 -- Servicios
@@ -39,7 +13,7 @@ local StarterPlayer = game:GetService("StarterPlayer")
 local UIS = game:GetService("UserInputService")
 
 --============================================================
--- Referencias / Módulos externos
+-- Referencias / MÃ³dulos externos
 --============================================================
 
 local LocalPlayer = Players.LocalPlayer
@@ -69,12 +43,12 @@ local Animations = Assets.Animations
 local Physics = require(Assets.Libraries.Physics)
 
 --============================================================
--- Tabla principal del módulo
+-- Tabla principal del mÃ³dulo
 --============================================================
 
 local ODMG = {}
 
--- Referencias compartidas para los módulos hijos
+-- Referencias compartidas para los mÃ³dulos hijos
 ODMG.RunService = RunService
 ODMG.RS = RS
 ODMG.TS = TS
@@ -104,7 +78,7 @@ ODMG.ServerCombat = nil
 ODMG.DirectionX = 0
 
 --============================================================
--- Estado / Configuración
+-- Estado / ConfiguraciÃ³n
 --============================================================
 
 ODMG.State = {
@@ -143,7 +117,7 @@ ODMG.Settings = {
 
 	GasLost = 1,
 
-	MaxGas = 100000000, --diseñado para ser 100
+	MaxGas = 100000000, --diseÃ±ado para ser 100
 
 	JamChance = 5, --ej.(5% --> 100)
 }
@@ -222,7 +196,7 @@ local function HandlesCheck()
 end
 
 --============================================================
--- Tablas de lookup de keybinds (para rutear el input a cada módulo)
+-- Tablas de lookup de keybinds (para rutear el input a cada mÃ³dulo)
 --============================================================
 
 local orbitSides = {
@@ -395,7 +369,7 @@ function ODMG:HitPart(Position: Vector3, Color: Color3, Time: number?)
 end
 
 --============================================================
--- Módulos hijos
+-- MÃ³dulos hijos
 --============================================================
 
 local Combat = require(script.Combat)(ODMG)
@@ -411,7 +385,7 @@ ODMG.Impulses = Impulses
 ODMG.Follower = Follower
 
 --============================================================
--- Inicialización / Input
+-- InicializaciÃ³n / Input
 --============================================================
 
 function ODMG:Initialize()
@@ -478,7 +452,7 @@ function ODMG:Initialize()
 					FINAL_GAS = ODMG.Misc.GAS_PERCENTAGES["25"]
 					PitchSound = 1
 				elseif GAS_PORCENTAJE < 25 and GAS_PORCENTAJE > 0 then
-					FINAL_GAS = "casi vacío"
+					FINAL_GAS = "casi vacÃ­o"
 					PitchSound = 0.8
 				else
 					FINAL_GAS = ODMG.Misc.GAS_PERCENTAGES["0"]
